@@ -6,7 +6,8 @@
     "start": "node ./bin/www",
     "start:dev": "nodemon ./bin/www",
     "seed:dev": "npx sequelize-cli db:seed:all",
-    "reset:dev": "npx sequelize-cli db:drop&& npx sequelize-cli db:create&& npx sequelize-cli db:migrate"
+    "reset:dev": "npx sequelize-cli db:drop&& npx sequelize-cli db:create&& npx sequelize-cli db:migrate&& npx sequelize-cli db:seed:all",
+    "migrate:dev": "npx sequelize-cli db:migrate"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
