@@ -14,7 +14,7 @@ const RegisterUser = async (req, res, next) => {
         }
 
         await User.create({ name, password: hashPassword, email, role });
-        return _res(res, 201);
+        return _res(res, 201, "Created");
     } catch (error) {
         next(createError(500));
     }
