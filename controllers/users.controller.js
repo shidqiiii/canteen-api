@@ -28,15 +28,15 @@ const LoginUser = async (req, res, next) => {
 
     try {
         // Check Email
-        const findEmail = await User.findOne({ where: { email: email } });
+        const findEmail = await User.findOne({ where: { email: email, role: "staff" || "student" } });
         if (!findEmail) {
-            next(createError(404, "User tidak ditemukan"));
+            next(createError(400, "User tidak ditemukan"));
         }
 
         // Check Password
         const validPassword = bcrypt.compareSync(password, findEmail.password);
         if (!validPassword) {
-            next(createError(401, "Email dan password tidak sesuai"));
+            next(createError(400, "Email dan password tidak sesuai"));
         }
 
         const token = jwt.sign(
@@ -50,4 +50,31 @@ const LoginUser = async (req, res, next) => {
     }
 };
 
-module.exports = { RegisterUser, LoginUser };
+const LoginAdmin = async (req, res, next) => {
+    const { email, password } = req.body;
+
+    try {
+        // Check Email
+        const findEmail = await User.findOne({ where: { email: email, role: "admin" } });
+        if (!findEmail) {
+            next(createError(400, "User tidak ditemukan"));
+        }
+
+        // Check Password
+        const validPassword = bcrypt.compareSync(password, findEmail.password);
+        if (!validPassword) {
+            next(createError(400, "Email dan password tidak sesuai"));
+        }
+
+        const token = jwt.sign(
+            { id: findEmail.id, name: findEmail.name, email: findEmail.email, role: findEmail.role },
+            process.env.SECRET_KEY,
+            { expiresIn: "1h" }
+        );
+        _res(res, 200, "Success", { token: token });
+    } catch (error) {
+        next(createError(500));
+    }
+};
+
+module.exports = { RegisterUser, LoginUser, LoginAdmin };
