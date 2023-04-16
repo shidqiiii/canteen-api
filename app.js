@@ -3,7 +3,6 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-const multer = require("multer");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/usersRoutes");
@@ -22,29 +21,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-// config upload file
-const fileStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, "/public/images"));
-    },
-    filename: (req, file, cb) => {
-        cb(null, new Date().getTime() + "-" + file.originalname);
-    },
-});
-
-const fileFilter = (req, file, cb) => {
-    if (file.mimetype === "image/png" || file.mimetype === "image/jpg" || file.mimetype === "image/jpeg") {
-        cb(null, true);
-    } else {
-        cb(null, false);
-    }
-};
-
-const upload = multer({ storage: fileStorage, fileFilter: fileFilter }).single("photo");
-
 app.use("/", indexRouter);
 app.use("/auth", usersRouter);
-app.use("/canteen", upload, canteensRouter);
+app.use("/canteen", canteensRouter);
 
 // catch 404 and forward to error handler
 app.use(async function (req, res, next) {

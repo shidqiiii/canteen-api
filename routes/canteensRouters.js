@@ -4,12 +4,15 @@ const {
     createNewCanteen,
     getDetailCanteen,
     updateCanteen,
+    deleteCanteen,
 } = require("../controllers/canteens.controller");
+const { UploadImage } = require("../middlewares/uploadPhoto");
 var router = express.Router();
 
 router.get("/list", getAllCanteeen);
-router.post("/new", createNewCanteen);
-router.get("/detail/:id", getDetailCanteen);
-router.post("/:id", updateCanteen);
+router.post("/new", UploadImage.single("photo"), createNewCanteen);
+router.get("/detail/:canteen_id", getDetailCanteen);
+router.post("/:canteen_id", updateCanteen);
+router.delete("/delete/:canteen_id", deleteCanteen);
 
 module.exports = router;
