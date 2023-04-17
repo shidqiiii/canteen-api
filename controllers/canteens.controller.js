@@ -5,7 +5,9 @@ const fs = require("fs");
 
 const getAllCanteeen = async (req, res, next) => {
     try {
-        const allCanteen = await Canteen.findAll({});
+        const allCanteen = await Canteen.findAll({
+            attributes: { exclude: ["description", "createdAt", "updatedAt", "deletedAt"] },
+        });
         _res(res, 200, "OK", allCanteen);
     } catch (error) {
         next(createError(500));
@@ -13,14 +15,19 @@ const getAllCanteeen = async (req, res, next) => {
 };
 
 const createNewCanteen = async (req, res, next) => {
-    const { name, address, rate } = req.body;
+    const { name, address, description } = req.body;
 
     if (!req.file) {
         next(createError(422, "Image harus diupload"));
     }
 
     try {
-        const newCanteen = await Canteen.create({ name, address, photo: req.file.path.replace(/\\/g, "/"), rate });
+        const newCanteen = await Canteen.create({
+            name,
+            address,
+            photo: req.file.path.replace(/\\/g, "/"),
+            description,
+        });
         _res(res, 201, "Created", newCanteen);
     } catch (error) {
         next(createError(500));
@@ -39,7 +46,7 @@ const getDetailCanteen = async (req, res, next) => {
 
 const updateCanteen = async (req, res, next) => {
     const { canteen_id } = req.params;
-    const { name, address, rate } = req.body;
+    const { name, address, description } = req.body;
     let new_image;
 
     try {
@@ -57,7 +64,7 @@ const updateCanteen = async (req, res, next) => {
         }
 
         const updateUser = await findCanteen.update(
-            { name, address, photo: new_image, rate },
+            { name, address, photo: new_image, description },
             { where: { canteen_id: canteen_id } }
         );
 
