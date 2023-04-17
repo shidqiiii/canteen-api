@@ -10,9 +10,9 @@ const { UploadImage } = require("../middlewares/uploadPhoto");
 var router = express.Router();
 
 router.get("/list", getAllCanteeen);
-router.post("/new", UploadImage.single("photo"), createNewCanteen);
 router.get("/detail/:canteen_id", getDetailCanteen);
-router.post("/:canteen_id", updateCanteen);
-router.delete("/delete/:canteen_id", deleteCanteen);
+router.post("/new", UploadImage.single("photo"), createNewCanteen);
+router.put("/update/:canteen_id", UploadImage.single("photo"), updateCanteen);
+router.post("/delete/:canteen_id", deleteCanteen);
 
 module.exports = router;
