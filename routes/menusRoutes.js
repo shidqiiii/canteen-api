@@ -15,7 +15,7 @@ router.get("/list", getAllMenu);
 router.get("/list/:canteen_id", getMenuByCanteen);
 router.get("/detail/:menu_id", getDetailMenu);
 router.post("/new", UploadImage.single("photo"), createNewMenu);
-router.put("/update/:menu_id", UploadImage.single("photo"), updateMenu);
+router.post("/update/:menu_id", UploadImage.single("photo"), updateMenu);
 router.post("/delete/:menu_id", deleteMenu);
 
 module.exports = router;
