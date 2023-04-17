@@ -2,7 +2,7 @@
 const { Model } = require("sequelize");
 const { v4: uuidv4 } = require("uuid");
 module.exports = (sequelize, DataTypes) => {
-    class Canteen extends Model {
+    class Menu extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -10,31 +10,41 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            Canteen.hasMany(models.Menu, {
+            Menu.belongsTo(models.Canteen, {
                 foreignKey: "canteen_id",
+                onDelete: "CASCADE",
             });
         }
     }
-    Canteen.init(
+    Menu.init(
         {
-            canteen_id: {
+            menu_id: {
                 type: DataTypes.UUID,
                 primaryKey: true,
                 allowNull: false,
                 defaultValue: () => uuidv4(),
             },
             name: DataTypes.STRING,
-            address: DataTypes.STRING,
-            photo: DataTypes.STRING,
             description: DataTypes.STRING,
+            price: DataTypes.FLOAT,
+            rate: DataTypes.FLOAT,
+            photo: DataTypes.STRING,
+            canteen_id: {
+                type: DataTypes.UUID,
+                defaultValue: () => uuidv4(),
+                onDelete: "CASCADE",
+                references: {
+                    model: "Canteen",
+                    key: "canteen_id",
+                },
+            },
         },
         {
             sequelize,
-            modelName: "Canteen",
+            modelName: "Menu",
             freezeTableName: true,
             paranoid: true,
         }
     );
-
-    return Canteen;
+    return Menu;
 };

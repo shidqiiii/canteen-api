@@ -1,4 +1,4 @@
-var express = require("express");
+const express = require("express");
 const {
     getAllCanteeen,
     createNewCanteen,
@@ -7,7 +7,7 @@ const {
     deleteCanteen,
 } = require("../controllers/canteens.controller");
 const { UploadImage } = require("../middlewares/uploadPhoto");
-var router = express.Router();
+const router = express.Router();
 
 router.get("/list", getAllCanteeen);
 router.get("/detail/:canteen_id", getDetailCanteen);
