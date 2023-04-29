@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
             // define association here
             Menu.belongsTo(models.Canteen, {
                 foreignKey: "canteen_id",
-                onDelete: "CASCADE",
             });
         }
     }
