@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
             Order.belongsTo(models.User, {
                 foreignKey: "user_id",
             });
+            Order.hasMany(models.MenuOrder, {
+                foreignKey: "menu_order_id",
+            });
         }
     }
     Order.init(
@@ -28,7 +31,6 @@ module.exports = (sequelize, DataTypes) => {
             user_id: {
                 type: DataTypes.UUID,
                 defaultValue: () => uuidv4(),
-                onDelete: "CASCADE",
                 references: {
                     model: "Canteen",
                     key: "user_id",

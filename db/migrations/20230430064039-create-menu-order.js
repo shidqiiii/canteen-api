@@ -4,27 +4,37 @@ const { v4: uuidv4 } = require("uuid");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable("order", {
-            order_id: {
+        await queryInterface.createTable("MenuOrders", {
+            menu_order_id: {
                 allowNull: false,
                 primaryKey: true,
                 type: Sequelize.UUID,
                 defaultValue: uuidv4(),
             },
-            total_price: {
+            quantity: {
                 type: Sequelize.INTEGER,
             },
-            status_order: {
+            price: {
                 type: Sequelize.INTEGER,
             },
-            user_id: {
+            menu_id: {
                 type: Sequelize.UUID,
                 defaultValue: uuidv4(),
                 onDelete: "CASCADE",
                 references: {
-                    model: "User",
-                    key: "user_id",
-                    as: "user_id",
+                    model: "Menu",
+                    key: "menu_id",
+                    as: "menu_id",
+                },
+            },
+            order_id: {
+                type: Sequelize.UUID,
+                defaultValue: uuidv4(),
+                onDelete: "CASCADE",
+                references: {
+                    model: "Order",
+                    key: "order_id",
+                    as: "order_id",
                 },
             },
             createdAt: {
@@ -42,6 +52,6 @@ module.exports = {
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable("order");
+        await queryInterface.dropTable("MenuOrders");
     },
 };
